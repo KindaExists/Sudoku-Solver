@@ -14,7 +14,7 @@ puzzle = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
 def run():
     """Runs the Sudoku-solver Program"""
 
-    board = sudoku.Board(sudoku)
+    board = sudoku.Board(puzzle)
 
     if sudoku.fill(board):
         print('Board has been solved, Final Board: \n')
