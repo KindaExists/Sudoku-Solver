@@ -10,8 +10,20 @@ sudoku = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
 
 
 class Board:
-    """
-    A Board class that contains Tile Classes
+    """Contains Tile Classes in a 2D Array Grid
+
+    Params:
+
+    \---------------
+
+            (list) board : A 9x9 2D List of integers used to set tile values
+
+    Attributes
+
+    \---------------
+
+            (list) board : Where board is stored
+
     """
 
     def __init__(self, board):
@@ -36,39 +48,107 @@ class Board:
         return board_str
 
     def get_tile(self, x, y):
+        """Gets Tile object in the specified x, y position
+
+        Params
+
+        \---------------
+
+                (int) x : The x Position of Tile
+
+                (int) y : The y Position of Tile
+
+        Raises
+
+        \---------------
+
+                IndexError : Index given is outside of range
+
+        Returns
+
+        \---------------
+
+                Tile : A tile class, containing its value
+        """
         return self.board[y][x]
 
     def get_empty(self):
+        """Finds for the first empty tile in Board
+
+        Returns
+
+        \---------------
+
+                Tile : First occurance of a tile with a value of 0
+
+                None : If no tiles are empty
+        """
+
         for tile in self.tiles:
             if tile.value == 0:
                 return tile
 
         return None
 
-    def check_tile(self, in_tile):
-        row_tiles = (tile for tile in self.board[in_tile.y])
-        col_tiles = (row[in_tile.x] for row in self.board)
-        box_x, box_y = in_tile.x//3, in_tile.y//3
+    def check_tile(self, test_tile):
+        """Checks if the given Tile object is valid
+
+        Params
+
+        \---------------
+
+                (tile) test tile : The tile to be tested for validity
+
+        Returns
+
+        \---------------
+
+                Bool : Depends on whether the tile is valid or not
+        """
+
+        row_tiles = (tile for tile in self.board[test_tile.y])
+        col_tiles = (row[test_tile.x] for row in self.board)
+        box_x, box_y = test_tile.x//3, test_tile.y//3
         box_tiles = (self.board[y][x] for y in range(box_y * 3, box_y * 3 + 3) for x in range(box_x * 3, box_x * 3 + 3))
 
         for other_tile in row_tiles:
-            if other_tile.value == in_tile.value and in_tile != other_tile:
+            if other_tile.value == test_tile.value and test_tile != other_tile:
                 return False
 
         for other_tile in col_tiles:
-            if other_tile.value == in_tile.value and in_tile != other_tile:
+            if other_tile.value == test_tile.value and test_tile != other_tile:
                 return False
 
         for other_tile in box_tiles:
-            if other_tile.value == in_tile.value and in_tile != other_tile:
+            if other_tile.value == test_tile.value and test_tile != other_tile:
                 return False
 
         return True
 
 
 class Tile:
-    """
-    A Tile Class that contains tile info (value, x_position, y_position)
+    """A Tile Class that contains tile info
+
+    Params
+
+    \---------------
+
+            (int) value : Used to set the value of the Tile
+
+            (int) col : Used to set the x position of the Tile
+
+            (int) row : Used to set the y position of the Tile
+
+    Attributes
+
+    \---------------
+
+            (int) value : Where value is stored
+
+            (int) x : Where col is stored
+
+            (int) y : Where row is stored
+
     """
 
     def __init__(self, value, col, row):
@@ -84,30 +164,47 @@ class Tile:
         return f'Tile({self.value}, {self.x}, {self.y})'
 
 
-def solve(board):
-    cur_tile = board.get_empty()
+def fill(board):
+    """Fills/Solves a sudoku board
 
-    if not cur_tile:
+    Params
+
+    \---------------
+
+            (Board) board : The sudoku board to be solved
+
+    Returns
+
+    \---------------
+
+            Bool : Depends on success of solving, Returns False if Failure
+    """
+    empty_tile = board.get_empty()
+
+    if not empty_tile:
         return True
 
     for value in range(1, 10):
-        cur_tile.value = value
-        if board.check_tile(cur_tile):
-            if solve(board):
+        empty_tile.value = value
+        if board.check_tile(empty_tile):
+            if fill(board):
                 return True
-        cur_tile.value = 0
+        empty_tile.value = 0
+        # Emptys out tile if the current/previous solutions did not work
 
     return False
 
 
 def run():
+    """Runs the Sudoku-solver Program"""
+
     board = Board(sudoku)
 
-    if solve(board):
-        print('Board has been solved, Final Board:')
+    if fill(board):
+        print('Board has been solved, Final Board: \n')
         print(board)
     else:
-        print('No solution can be found')
+        print('This puzzle cannot be solved')
         print(board)
 
 
