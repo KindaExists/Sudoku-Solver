@@ -37,20 +37,6 @@ class Board:
     def get_tile(self, x, y):
         return self.board[y][x]
 
-    """def test_row(self, row, value):
-        row_tiles = (tile for tile in self.board[row])
-
-    def test_col(self, col, value):
-        col_tiles = (tile for row in self.board for tile in row[col])
-
-    def test_box(self, tile_x, tile_y, value):
-        box_x, box_y = tile_x//3, tile_y//3
-
-        for x in range(box_y * 3, box_y * 3 + 3):
-            for y in range(box_x * 3, box_x * 3 + 3):
-                if self.board[x][y] == value and (tile_x != x or tile_y != y):
-                    return False"""
-
 
     def test_tile(self, tile):
         row_tiles = (tile for tile in self.board[tile.y])
