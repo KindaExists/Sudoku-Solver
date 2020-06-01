@@ -1,15 +1,15 @@
 class Board:
     """Contains Tile Classes in a 2D Array Grid
 
-    Params:
+    Params
 
-    \---------------
+    ----------
 
             (list) board : A 9x9 2D List of integers used to set tile values
 
     Attributes
 
-    \---------------
+    ----------
 
             (list) board : Where board is stored
 
@@ -41,7 +41,7 @@ class Board:
 
         Params
 
-        \---------------
+        ----------
 
                 (int) x : The x Position of Tile
 
@@ -49,13 +49,13 @@ class Board:
 
         Raises
 
-        \---------------
+        ----------
 
                 IndexError : Index given is outside of range
 
         Returns
 
-        \---------------
+        ----------
 
                 Tile : A tile class, containing its value
         """
@@ -66,7 +66,7 @@ class Board:
 
         Returns
 
-        \---------------
+        ----------
 
                 Tile : First occurance of a tile with a value of 0
 
@@ -84,13 +84,13 @@ class Board:
 
         Params
 
-        \---------------
+        ----------
 
                 (tile) test tile : The tile to be tested for validity
 
         Returns
 
-        \---------------
+        ----------
 
                 Bool : Depends on whether the tile is valid or not
         """
@@ -98,7 +98,8 @@ class Board:
         row_tiles = (tile for tile in self.board[test_tile.y])
         col_tiles = (row[test_tile.x] for row in self.board)
         box_x, box_y = test_tile.x//3, test_tile.y//3
-        box_tiles = (self.board[y][x] for y in range(box_y * 3, box_y * 3 + 3) for x in range(box_x * 3, box_x * 3 + 3))
+        box_tiles = (self.board[y][x] for y in range(box_y * 3, box_y * 3 + 3)
+                     for x in range(box_x * 3, box_x * 3 + 3))
 
         for other_tile in row_tiles:
             if other_tile.value == test_tile.value and test_tile != other_tile:
@@ -120,7 +121,7 @@ class Tile:
 
     Params
 
-    \---------------
+    ----------
 
             (int) value : Used to set the value of the Tile
 
@@ -130,7 +131,7 @@ class Tile:
 
     Attributes
 
-    \---------------
+    ----------
 
             (int) value : Where value is stored
 
@@ -158,13 +159,13 @@ def fill(board):
 
     Params
 
-    \---------------
+    ----------
 
             (Board) board : The sudoku board to be solved
 
     Returns
 
-    \---------------
+    ----------
 
             Bool : Depends on success of solving, Returns False if Failure
     """
