@@ -20,6 +20,7 @@ class Board:
                       for row in range(len(board))]
 
         self.tiles = [tile for row in self.board for tile in row]
+        # Future Change(?): Can be switched to generator, might be cheaper
 
     def __str__(self):
         board_str = ''
@@ -37,23 +38,29 @@ class Board:
     def get_tile(self, x, y):
         return self.board[y][x]
 
+    def get_empty(self):
+        for tile in self.tiles:
+            if tile.value == 0:
+                return tile
 
-    def test_tile(self, tile):
-        row_tiles = (tile for tile in self.board[tile.y])
-        col_tiles = (tile for row in self.board for tile in row[tile.x])
-        box_x, box_y = tile.x//3, tile.y//3
+        return None
+
+    def check_tile(self, in_tile):
+        row_tiles = (tile for tile in self.board[in_tile.y])
+        col_tiles = (row[in_tile.x] for row in self.board)
+        box_x, box_y = in_tile.x//3, in_tile.y//3
         box_tiles = (self.board[y][x] for y in range(box_y * 3, box_y * 3 + 3) for x in range(box_x * 3, box_x * 3 + 3))
 
         for other_tile in row_tiles:
-            if other_tile.value == tile.value and tile != other_tile:
+            if other_tile.value == in_tile.value and in_tile != other_tile:
                 return False
 
         for other_tile in col_tiles:
-            if other_tile.value == tile.value and tile != other_tile:
+            if other_tile.value == in_tile.value and in_tile != other_tile:
                 return False
 
         for other_tile in box_tiles:
-            if other_tile.value == tile.value and tile != other_tile:
+            if other_tile.value == in_tile.value and in_tile != other_tile:
                 return False
 
         return True
@@ -77,10 +84,31 @@ class Tile:
         return f'Tile({self.value}, {self.x}, {self.y})'
 
 
+def solve(board):
+    cur_tile = board.get_empty()
+
+    if not cur_tile:
+        return True
+
+    for value in range(1, 10):
+        cur_tile.value = value
+        if board.check_tile(cur_tile):
+            if solve(board):
+                return True
+        cur_tile.value = 0
+
+    return False
+
+
 def run():
     board = Board(sudoku)
-    for tile in board.tiles:
-        pass
+
+    if solve(board):
+        print('Board has been solved, Final Board:')
+        print(board)
+    else:
+        print('No solution can be found')
+        print(board)
 
 
 if __name__ == "__main__":
