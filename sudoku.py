@@ -1,14 +1,3 @@
-sudoku = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
-          [6, 0, 0, 1, 9, 5, 0, 0, 0],
-          [0, 9, 8, 0, 0, 0, 0, 6, 0],
-          [8, 0, 0, 0, 6, 0, 0, 0, 3],
-          [4, 0, 0, 8, 0, 3, 0, 0, 1],
-          [7, 0, 0, 0, 2, 0, 0, 0, 6],
-          [0, 6, 0, 0, 0, 0, 2, 8, 0],
-          [0, 0, 0, 4, 1, 9, 0, 0, 5],
-          [0, 0, 0, 0, 8, 0, 0, 7, 9]]
-
-
 class Board:
     """Contains Tile Classes in a 2D Array Grid
 
@@ -190,23 +179,5 @@ def fill(board):
             if fill(board):
                 return True
         empty_tile.value = 0
-        # Emptys out tile if the current/previous solutions did not work
 
     return False
-
-
-def run():
-    """Runs the Sudoku-solver Program"""
-
-    board = Board(sudoku)
-
-    if fill(board):
-        print('Board has been solved, Final Board: \n')
-        print(board)
-    else:
-        print('This puzzle cannot be solved')
-        print(board)
-
-
-if __name__ == "__main__":
-    run()
